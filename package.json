@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "cesium": "1.104",
+    "pinia": "^2.1.7",
     "vue": "^3.2.47"
   },
   "devDependencies": {

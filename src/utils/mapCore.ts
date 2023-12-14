@@ -1,20 +1,20 @@
 /*
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 13:56:34
- * @LastEditors: 耿连龙 genglianlong@mti-sh.cn
- * @LastEditTime: 2023-12-13 16:02:37
+ * @LastEditors: 耿连龙 654506379@qq.com
+ * @LastEditTime: 2023-12-14 16:40:01
  * @FilePath: \vue3-cesium\src\utils\mapCore.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import {
-  TileMapServiceImageryProvider,
   UrlTemplateImageryProvider,
   Viewer,
-  buildModuleUrl,
   createWorldTerrain,
   ScreenSpaceEventType,
   Cartesian3,
   Ion,
+  Math,
+  Ellipsoid
 } from "cesium";
 import "cesium/Build/CesiumUnminified/Widgets/widgets.css";
 
@@ -22,13 +22,12 @@ window.CESIUM_BASE_URL = "libs/cesium/";
 Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4MGNhNzU5Mi03MDM3LTQ3MDItYmQ4Yi0wYTk1ZDk0NDc4MDAiLCJpZCI6MzQzMzMsImlhdCI6MTY2MDg3MjcyNn0.cxz8qKn2AetiPtoIOh7z3l6ozhYZJ8yOdK1tyshvaBw";
 
-export function initView(ele: HTMLElement): Viewer | null {
+export function initView(ele: HTMLElement): Viewer{
   const viewer = new Viewer(ele, {
     imageryProvider: new UrlTemplateImageryProvider({
-        url:
-          "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
-        minimumLevel: 2,
-      }),
+      url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
+      minimumLevel: 2,
+    }),
     requestRenderMode: true, // 开启请求的渲染模式
     maximumRenderTimeChange: Infinity, // 处理模拟时间改变
     animation: false, // 是否创建动画小器件，左下角仪表
@@ -82,9 +81,38 @@ export function initView(ele: HTMLElement): Viewer | null {
   );
 
   viewer.camera.flyTo({
-    destination: Cartesian3.fromDegrees(104.07,30.66, 211192),
+    destination: Cartesian3.fromDegrees(104.07, 30.66, 211192),
     duration: 1,
   });
 
-  return ele ? viewer : null;
+  return viewer;
+}
+
+export function getDegreesOfCamera(viewer: Viewer) {
+  var lngLat = cartesian3ToDegrees(viewer.camera.positionWC, viewer);
+  var heading = Math.toDegrees(viewer.camera.heading);
+  var pitch = Math.toDegrees(viewer.camera.pitch);
+  var roll = Math.toDegrees(viewer.camera.roll);
+  return {
+    destination: [lngLat[0], lngLat[1], lngLat[2]],
+    orientation: [heading, pitch, roll],
+  };
+}
+
+/**
+ * 三维笛卡尔坐标转角度
+ *
+ * @export
+ * @param {Cesium.Cartesian3} cartesian3
+ * @param {Globe} globe
+ * @returns {PointCoordinate}
+ */
+function cartesian3ToDegrees(cartesian3:Cartesian3, viewer:Viewer) {
+  var lngLat = (
+    viewer ? viewer.scene.globe.ellipsoid : Ellipsoid.WGS84
+  ).cartesianToCartographic(cartesian3);
+  var lng = Math.toDegrees(lngLat.longitude);
+  var lat = Math.toDegrees(lngLat.latitude);
+  var hei = lngLat.height;
+  return [lng, lat, hei];
 }
