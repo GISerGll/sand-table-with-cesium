@@ -1,0 +1,21 @@
+@import "theme/theme-default.scss";
+
+// /* 定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: $wss--scrollbar-background;
+}
+/*定义滑块 内阴影+圆角*/
+
+::-webkit-scrollbar-thumb {
+  background-color: $wss--scrollbar-thumb-background;
+  border-radius: 5px;
+  &:hover {
+    background: $wss--scrollbar-thumb-active;
+  }
+  &:active {
+    background: $wss--scrollbar-thumb-active;
+  }
+}

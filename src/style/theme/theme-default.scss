@@ -1,0 +1,79 @@
+// 背景色
+$wss--color-white: #fff;
+$wss--color-black: #000000;
+$wss--background-color-base: #001327; // 基本背景色 ackground-color-base || $wss--background-color-base
+// 主色
+$wss--color-primary: #3498ff;
+$wss--color-danger: #ee3636;
+$wss--color-warning: #f58d27;
+$wss--color-success: #44e86f;
+$wss--color-info: #999999;
+// 字体颜色
+$wss--color-text-primary: #b8efff;
+$wss--color-text-regular: #fff;
+$wss--color-text-secondary: #b4eaf9;
+// 辅助色
+$wss--other-color1: #ff5151;
+$wss--other-color2: #060607;
+$wss--other-color3: #011f3a;
+$wss--other-color4: #e7cf2b;
+$wss--other-color5: #f7dc25;
+$wss--other-color6: #b2e7ff;
+// 边框
+$wss--border-color-base: #0c5db1; // 基本
+$wss--border-color-light: #042c55; // 浅色
+$wss--border-hover-color: $wss--color-primary; // 经过
+// form表单项背景
+$wss--color-input-background: #000a15;
+// 字体大小
+$wss--fontsize-large-title: 54px;
+$wss--fontsize-larger: 36px;
+$wss--fontsize-large-middle: 28px;
+$wss--fontsize-medium-middle: 24px;
+$wss--fontsize-medium: 22px;
+$wss--fontsize-base: 20px;
+$wss--fontsize-small: 18px;
+$wss--fontsize-mini: 14px;
+// 滚动条样式
+$wss--scrollbar-background: $wss--background-color-base; //底色
+$wss--scrollbar-thumb-background: rgba(0, 150, 255, 0.2); //默认滑块色
+$wss--scrollbar-thumb-active: $wss--color-primary;
+
+//主题相关配置
+//主题文字颜色设置
+$font-color-theme_default: #00aaff;
+$font-color-theme_qing: #19f5fc;
+$font-color-theme_default1: #3498ff;
+$font-color-theme_qing1: #63e5ff;
+$font-color-theme_default2: #0990ec;
+$font-color-theme_qing2: #63e5ff;
+$font-color-theme_default3: #3498ff;
+$font-color-theme_qing3: #00edf3;
+$font-color-theme_default4: #1989fe;
+
+//主题背景颜色设置
+$background-color-theme_default: rgba(0, 55, 110, 0.3);
+$background-color-theme_qing: rgba(0, 85, 105, 0.3);
+$background-color-theme_default1: #001121;
+$background-color-theme_qing1: #001a20;
+$background-color-theme_default2: #042c55;
+$background-color-theme_qing2: #005569;
+$background-color-theme_default3: #004d99;
+$background-color-theme_qing3: #015972;
+$background-color-theme_default4: rgba(0, 19, 39, 0);
+$background-color-theme_qing4: #012430;
+$background-color-theme_default5: #00376e;
+$background-color-theme_qing5: #005569;
+$background-color-theme_default6: rgba(0, 19, 39, 0);
+$background-color-theme_qing6: #005569;
+$command-jqtj_default: rgba(18, 82, 147, 0.2);
+$command-jqtj_qing: rgba(0, 85, 105, 0.4);
+$command-jqlb_qing: rgba(0, 85, 105, 0.2);
+$command-jqlb-head-bottom_qing: #00bcbf;
+$command-jqlb-head-active_default: #0060bf;
+$command-jqzb-tab_color_qing: #007692;
+$command-yuan-button_default: #409eff;
+$command-yuan-button_qing: #b8efff;
+//渐变色
+$bg-gradient-theme_default: #1989fe;
+$bg-gradient-theme_qing: #19f5fc;
