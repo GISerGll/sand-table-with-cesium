@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 13:56:34
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-14 16:40:01
+ * @LastEditTime: 2023-12-15 17:49:02
  * @FilePath: \vue3-cesium\src\utils\mapCore.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,8 +13,8 @@ import {
   ScreenSpaceEventType,
   Cartesian3,
   Ion,
-  Math,
-  Ellipsoid
+  HeadingPitchRoll,
+  Math
 } from "cesium";
 import "cesium/Build/CesiumUnminified/Widgets/widgets.css";
 
@@ -80,39 +80,28 @@ export function initView(ele: HTMLElement): Viewer{
     ScreenSpaceEventType.LEFT_DOUBLE_CLICK
   );
 
+  const ori = new HeadingPitchRoll(
+    Math.toRadians(358.51265883615645), Math.toRadians(-67.33458315095581), Math.toRadians(0.006693394611650259)
+  );
+  const ori1 = new HeadingPitchRoll(
+    Math.toRadians(5.088887490341627e-14), Math.toRadians(-89.99800787474585), Math.toRadians(0)
+  );
+
+
   viewer.camera.flyTo({
-    destination: Cartesian3.fromDegrees(104.07, 30.66, 211192),
-    duration: 1,
+    destination: Cartesian3.fromDegrees(-178.37060798979678, 38.99479874438089, 56056607.29408956),
+    orientation : ori1,
+    duration: 2,
+    complete:() => {
+      setTimeout(() => {
+        viewer.camera.flyTo({
+          destination: Cartesian3.fromDegrees(111.15273287715254, 16.61320059283247, 4997491.785760499),
+          orientation : ori,
+          duration: 3,
+        });
+      },1000)
+    }
   });
 
   return viewer;
-}
-
-export function getDegreesOfCamera(viewer: Viewer) {
-  var lngLat = cartesian3ToDegrees(viewer.camera.positionWC, viewer);
-  var heading = Math.toDegrees(viewer.camera.heading);
-  var pitch = Math.toDegrees(viewer.camera.pitch);
-  var roll = Math.toDegrees(viewer.camera.roll);
-  return {
-    destination: [lngLat[0], lngLat[1], lngLat[2]],
-    orientation: [heading, pitch, roll],
-  };
-}
-
-/**
- * 三维笛卡尔坐标转角度
- *
- * @export
- * @param {Cesium.Cartesian3} cartesian3
- * @param {Globe} globe
- * @returns {PointCoordinate}
- */
-function cartesian3ToDegrees(cartesian3:Cartesian3, viewer:Viewer) {
-  var lngLat = (
-    viewer ? viewer.scene.globe.ellipsoid : Ellipsoid.WGS84
-  ).cartesianToCartographic(cartesian3);
-  var lng = Math.toDegrees(lngLat.longitude);
-  var lat = Math.toDegrees(lngLat.latitude);
-  var hei = lngLat.height;
-  return [lng, lat, hei];
 }
