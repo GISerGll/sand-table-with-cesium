@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 13:56:34
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-15 17:49:02
+ * @LastEditTime: 2023-12-16 23:48:34
  * @FilePath: \vue3-cesium\src\utils\mapCore.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,15 +14,18 @@ import {
   Cartesian3,
   Ion,
   HeadingPitchRoll,
-  Math
+  Math,
+  GeoJsonDataSource,
+  Color,
 } from "cesium";
 import "cesium/Build/CesiumUnminified/Widgets/widgets.css";
+import BC522 from "@/assets/json/BC522.json";
 
 window.CESIUM_BASE_URL = "libs/cesium/";
 Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4MGNhNzU5Mi03MDM3LTQ3MDItYmQ4Yi0wYTk1ZDk0NDc4MDAiLCJpZCI6MzQzMzMsImlhdCI6MTY2MDg3MjcyNn0.cxz8qKn2AetiPtoIOh7z3l6ozhYZJ8yOdK1tyshvaBw";
 
-export function initView(ele: HTMLElement): Viewer{
+export function initView(ele: HTMLElement): Viewer {
   const viewer = new Viewer(ele, {
     imageryProvider: new UrlTemplateImageryProvider({
       url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
@@ -81,26 +84,46 @@ export function initView(ele: HTMLElement): Viewer{
   );
 
   const ori = new HeadingPitchRoll(
-    Math.toRadians(358.51265883615645), Math.toRadians(-67.33458315095581), Math.toRadians(0.006693394611650259)
+    Math.toRadians(358.51265883615645),
+    Math.toRadians(-67.33458315095581),
+    Math.toRadians(0.006693394611650259)
   );
   const ori1 = new HeadingPitchRoll(
-    Math.toRadians(5.088887490341627e-14), Math.toRadians(-89.99800787474585), Math.toRadians(0)
+    Math.toRadians(5.088887490341627e-14),
+    Math.toRadians(-89.99800787474585),
+    Math.toRadians(0)
   );
 
+  //加载公元前522年疆域
+  viewer.dataSources.add(
+    GeoJsonDataSource.load(BC522, {
+      stroke: Color.HOTPINK,
+      fill: Color.PINK.withAlpha(0.5),
+      strokeWidth: 3,
+    })
+  );
 
   viewer.camera.flyTo({
-    destination: Cartesian3.fromDegrees(-178.37060798979678, 38.99479874438089, 56056607.29408956),
-    orientation : ori1,
+    destination: Cartesian3.fromDegrees(
+      -178.37060798979678,
+      38.99479874438089,
+      56056607.29408956
+    ),
+    orientation: ori1,
     duration: 2,
-    complete:() => {
+    complete: () => {
       setTimeout(() => {
         viewer.camera.flyTo({
-          destination: Cartesian3.fromDegrees(111.15273287715254, 16.61320059283247, 4997491.785760499),
-          orientation : ori,
+          destination: Cartesian3.fromDegrees(
+            111.15273287715254,
+            16.61320059283247,
+            4997491.785760499
+          ),
+          orientation: ori,
           duration: 3,
         });
-      },1000)
-    }
+      }, 1000);
+    },
   });
 
   return viewer;
