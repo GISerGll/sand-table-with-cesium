@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/geojson": "^7946.0.13",
+    "@types/turf": "^3.5.32",
     "cesium": "1.104",
     "pinia": "^2.1.7",
+    "turf": "^3.0.14",
     "vue": "^3.2.47"
   },
   "devDependencies": {

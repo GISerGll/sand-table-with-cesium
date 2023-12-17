@@ -1,8 +1,8 @@
 <!--
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 17:43:55
- * @LastEditors: 耿连龙 genglianlong@mti-sh.cn
- * @LastEditTime: 2023-12-13 17:57:44
+ * @LastEditors: 耿连龙 654506379@qq.com
+ * @LastEditTime: 2023-12-17 19:43:23
  * @FilePath: \Warfare-Simulation-Spring\README.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,4 +22,8 @@ pnpm dev
 pnpm build
 ### 预览
 pnpm preview
+
+## 数据来源
+[知乎](https://www.zhihu.com/zvideo/1206289340101459968?utm_source=wechat_session&utm_id=0) 吴越春秋地图范围，经QGIS软件地理校准生成适量，加载到Cesium生成范围。
+
 

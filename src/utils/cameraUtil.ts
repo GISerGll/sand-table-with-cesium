@@ -26,6 +26,15 @@ export default class cameraUtil {
     };
   }
 
+
+  /**
+ * 三维笛卡尔坐标转角度
+ *
+ * @export
+ * @param {Cesium.Cartesian3} cartesian3
+ * @param {Viewer} viewer
+ * @returns {PointCoordinate}
+ */
   private cartesian3ToDegrees(cartesian3: Cartesian3, viewer: Viewer) {
     var lngLat = (
       viewer ? viewer.scene.globe.ellipsoid : Ellipsoid.WGS84
@@ -37,15 +46,3 @@ export default class cameraUtil {
   }
 }
 
-/**
- * 三维笛卡尔坐标转角度
- *
- * @export
- * @param {Cesium.Cartesian3} cartesian3
- * @param {Viewer} viewer
- * @returns {PointCoordinate}
- */
-
-// export default {
-//   getDegreesOfCamera,
-// };
