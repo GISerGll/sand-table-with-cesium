@@ -24,6 +24,6 @@ pnpm build
 pnpm preview
 
 ## 数据来源
-[知乎](https://www.zhihu.com/zvideo/1206289340101459968?utm_source=wechat_session&utm_id=0) 吴越春秋地图范围，经QGIS软件地理校准生成适量，加载到Cesium生成范围。
+[知乎](https://www.zhihu.com/zvideo/1206289340101459968?utm_source=wechat_session&utm_id=0) 吴越春秋地图范围，经QGIS软件地理校准生成适量，加载到Cesium生成大致范围。
 
 
