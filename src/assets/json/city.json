@@ -1,0 +1,35 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1794,
+      "properties": { "_draw_type": "point", "名称": "郢都", "国家": "楚" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [112.23792312, 30.33058024]
+      },
+      "bbox": [112.23792312, 30.33058024, 112.23792312, 30.33058024]
+    },
+    {
+      "type": "Feature",
+      "id": 2657,
+      "properties": { "_draw_type": "point", "名称": "会稽", "国家": "越" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.58108365, 30.04958358]
+      },
+      "bbox": [120.58108365, 30.04958358, 120.58108365, 30.04958358]
+    },
+    {
+      "type": "Feature",
+      "id": 3644,
+      "properties": { "_draw_type": "point", "名称": "吴", "国家": "吴" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.58122945, 31.29864403]
+      },
+      "bbox": [120.58122945, 31.29864403, 120.58122945, 31.29864403]
+    }
+  ]
+}

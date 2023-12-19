@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-18 16:55:20
+ * @LastEditTime: 2023-12-19 23:32:17
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,6 +20,9 @@ const cesiumStore = useSysStore()
 import CameraUtil from "@/utils/cameraUtil"
 import GeometryUtil from "@/utils/geometryUtil"
 import BC522 from "@/assets/json/BC522.json";
+import citys from "@/assets/json/city.json"
+import cityIcon from "@/assets/images/city_icon.png"
+import { Feature, FeatureCollection } from "geojson";
 // window.cameraUtil = cameraUtil;
 onMounted(() => {
   initView(viewerDivRef.value as HTMLElement).then(res => {
@@ -33,13 +36,20 @@ onMounted(() => {
     window.cameraUtil = cameraUtil;
     //添加范围
     const geometryUtil = new GeometryUtil(viewer);
-    geometryUtil.addGeoJsonPolygon(BC522);
-    //添加标注
+    geometryUtil.addGeoJsonPolygon(BC522 as FeatureCollection);
+    //添加国家标注
     BC522.features.forEach(feature => {
-      const centerCoords = geometryUtil.getCenterCoords(feature) as [number, number];
+      const centerCoords = geometryUtil.getCenterCoords(feature as Feature) as [number, number];
 
       centerCoords && geometryUtil.addLabel([...centerCoords, 15000], feature.properties.name)
     })
+    //添加首都标注及图标
+    citys.features.forEach(city => {
+      city.properties.url = cityIcon;
+    })
+    //@ts-ignore
+    geometryUtil.addIcon(citys as FeatureCollection)
+    
   })
 
 });

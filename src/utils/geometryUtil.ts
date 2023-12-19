@@ -2,11 +2,11 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-17 16:36:47
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-18 16:58:11
+ * @LastEditTime: 2023-12-19 23:33:30
  * @FilePath: \Warfare-Simulation-Spring\src\utils\geometryUtil.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import turf from "turf";
+import turf, { feature } from "turf";
 import { FeatureCollection, Feature } from "geojson";
 import {
   Viewer,
@@ -18,6 +18,11 @@ import {
   LabelStyle,
   GeoJsonDataSource,
   Entity,
+  BillboardCollection,
+  Cartesian2,
+  HorizontalOrigin,
+  VerticalOrigin,
+  Geometry,
 } from "cesium";
 
 export default class GeometryUtil {
@@ -38,6 +43,32 @@ export default class GeometryUtil {
       outlineColor: Color.BLACK,
       outlineWidth: 2,
       style: LabelStyle.FILL_AND_OUTLINE,
+    });
+  }
+
+  public addIcon(featureCollection: FeatureCollection) {
+    const billboards = this.viewer.scene.primitives.add(
+      new BillboardCollection()
+    );
+
+    featureCollection.features.forEach((feature) => {
+      //@ts-ignore
+      const degrees: [number, number, number] = feature.geometry.coordinates;
+      billboards.add({
+        image: feature.properties?.url, // default: undefined
+        show: true, // default
+        position: Cartesian3.fromDegrees(...degrees),
+        pixelOffset: new Cartesian2(0, -50), // default: (0, 0)
+        eyeOffset: new Cartesian3(0.0, 0.0, 0.0), // default
+        horizontalOrigin: HorizontalOrigin.CENTER, // default
+        verticalOrigin: VerticalOrigin.BOTTOM, // default: 
+        scale:0.5,
+        color: Color.LIME, // default: WHITE
+        alignedAxis: Cartesian3.ZERO, // default
+        width: 64, // default: undefined
+        height: 64, // default: undefined
+        sizeInMeters: false, // default
+      });
     });
   }
 
@@ -81,9 +112,7 @@ export default class GeometryUtil {
         if (!entity.polygon) return;
         entity.polygon.material = color;
 
-        //Extrude the polygon based on the state's population.  Each entity
-        //stores the properties for the GeoJSON feature it was created from
-        //Since the population is a huge number, we divide by 50.
+        //Extrude the polygon
         //@ts-ignore
         entity.polygon.extrudedHeight = 1000;
         //@ts-ignore
@@ -98,6 +127,7 @@ export default class GeometryUtil {
     let _center;
     try {
       // center函数的参数可以是FeatureCollection 也可以是Feature,此处提示有问题
+      //@ts-ignore
       _center = turf.center(feature as any);
     } catch (error) {
       console.log(error);
