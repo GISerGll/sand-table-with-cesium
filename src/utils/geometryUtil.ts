@@ -2,12 +2,19 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-17 16:36:47
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-19 23:33:30
+ * @LastEditTime: 2023-12-21 11:31:19
  * @FilePath: \Warfare-Simulation-Spring\src\utils\geometryUtil.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import turf, { feature } from "turf";
-import { FeatureCollection, Feature } from "geojson";
+// import { FeatureCollection, Feature } from "geojson";
+import type {
+  FeatureCollection,
+  Feature,
+  Geometry,
+  Position,
+  Polygon,
+} from "geojson";
 import {
   Viewer,
   Cartesian3,
@@ -22,8 +29,8 @@ import {
   Cartesian2,
   HorizontalOrigin,
   VerticalOrigin,
-  Geometry,
 } from "cesium";
+import type { Property } from "cesium";
 
 export default class GeometryUtil {
   private viewer: Viewer;
@@ -52,17 +59,16 @@ export default class GeometryUtil {
     );
 
     featureCollection.features.forEach((feature) => {
-      //@ts-ignore
-      const degrees: [number, number, number] = feature.geometry.coordinates;
+      const degrees = (feature.geometry as Polygon).coordinates;
       billboards.add({
         image: feature.properties?.url, // default: undefined
         show: true, // default
+        //@ts-ignore
         position: Cartesian3.fromDegrees(...degrees),
-        pixelOffset: new Cartesian2(0, -50), // default: (0, 0)
         eyeOffset: new Cartesian3(0.0, 0.0, 0.0), // default
         horizontalOrigin: HorizontalOrigin.CENTER, // default
-        verticalOrigin: VerticalOrigin.BOTTOM, // default: 
-        scale:0.5,
+        verticalOrigin: VerticalOrigin.BOTTOM, // default:
+        scale: 0.5,
         color: Color.LIME, // default: WHITE
         alignedAxis: Cartesian3.ZERO, // default
         width: 64, // default: undefined
@@ -113,12 +119,12 @@ export default class GeometryUtil {
         entity.polygon.material = color;
 
         //Extrude the polygon
-        //@ts-ignore
-        entity.polygon.extrudedHeight = 1000;
-        //@ts-ignore
-        entity.polygon.outline = true;
-        //@ts-ignore
-        entity.polygon.outlineColor = Color.MAGENTA;
+
+        entity.polygon.extrudedHeight = 1000 as any;
+
+        entity.polygon.outline = true as any;
+
+        entity.polygon.outlineColor = Color.MAGENTA as any;
       }
     });
   }

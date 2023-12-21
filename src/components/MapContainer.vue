@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-19 23:32:17
+ * @LastEditTime: 2023-12-21 11:34:55
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -41,15 +41,18 @@ onMounted(() => {
     BC522.features.forEach(feature => {
       const centerCoords = geometryUtil.getCenterCoords(feature as Feature) as [number, number];
 
-      centerCoords && geometryUtil.addLabel([...centerCoords, 15000], feature.properties.name)
+      centerCoords && geometryUtil.addLabel([...centerCoords, 1000], feature.properties.name)
     })
     //添加首都标注及图标
     citys.features.forEach(city => {
       city.properties.url = cityIcon;
+
+      geometryUtil.addLabel([...city.geometry.coordinates, 1000], city.properties['名称'])
     })
     //@ts-ignore
     geometryUtil.addIcon(citys as FeatureCollection)
-    
+
+
   })
 
 });
