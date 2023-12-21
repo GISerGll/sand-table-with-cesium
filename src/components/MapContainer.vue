@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-21 11:34:55
+ * @LastEditTime: 2023-12-21 15:54:56
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,9 +20,9 @@ const cesiumStore = useSysStore()
 import CameraUtil from "@/utils/cameraUtil"
 import GeometryUtil from "@/utils/geometryUtil"
 import BC522 from "@/assets/json/BC522.json";
-import citys from "@/assets/json/city.json"
+import cities from "@/assets/json/city.json"
 import cityIcon from "@/assets/images/city_icon.png"
-import { Feature, FeatureCollection } from "geojson";
+import type { Feature, Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
 // window.cameraUtil = cameraUtil;
 onMounted(() => {
   initView(viewerDivRef.value as HTMLElement).then(res => {
@@ -34,23 +34,51 @@ onMounted(() => {
     //视角定位
     const cameraUtil = new CameraUtil(viewer);
     window.cameraUtil = cameraUtil;
+
     //添加范围
     const geometryUtil = new GeometryUtil(viewer);
-    geometryUtil.addGeoJsonPolygon(BC522 as FeatureCollection);
-    //添加国家标注
+    geometryUtil.addGeoJsonPolygon(BC522 as IFeatureCollection);
+
+    //添加国家名称标注
+    const countryLabels: IFeatureCollection = {
+      type: "FeatureCollection",
+      features: []
+    }
     BC522.features.forEach(feature => {
-      const centerCoords = geometryUtil.getCenterCoords(feature as Feature) as [number, number];
+      const centerCoords = geometryUtil.getCenterCoords(feature as IFeature);
+      const labelFeature: Feature = {
+        type: "Feature",
+        geometry: {
+          coordinates: centerCoords as IPosition,
+          type: "Point",
+        },
+        properties: {
+          ...feature.properties,
+          height: 1500,
+          label: feature.properties.name
+        }
+      }
 
-      centerCoords && geometryUtil.addLabel([...centerCoords, 1000], feature.properties.name)
+      countryLabels.features.push(labelFeature);
     })
+    geometryUtil.addLabels(countryLabels)
+
     //添加首都标注及图标
-    citys.features.forEach(city => {
+    cities.features.forEach(city => {
       city.properties.url = cityIcon;
-
-      geometryUtil.addLabel([...city.geometry.coordinates, 1000], city.properties['名称'])
+      city.properties.label = city.properties["名称"];
+      city.properties.fontsize = '16px';
+      city.properties.offsetWidth = 26;
+      city.properties.offsetHeight = -16;
+      city.properties.height = 1000;
     })
-    //@ts-ignore
-    geometryUtil.addIcon(citys as FeatureCollection)
+
+    geometryUtil.addLabels(cities as any)
+
+    cities.features.forEach(city => {
+      city.properties.height = 1000;
+    })
+    geometryUtil.addIcons(cities as any)
 
 
   })

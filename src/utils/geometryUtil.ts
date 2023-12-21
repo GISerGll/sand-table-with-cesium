@@ -2,18 +2,19 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-17 16:36:47
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-21 11:31:19
+ * @LastEditTime: 2023-12-21 15:48:13
  * @FilePath: \Warfare-Simulation-Spring\src\utils\geometryUtil.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import turf, { feature } from "turf";
 // import { FeatureCollection, Feature } from "geojson";
 import type {
-  FeatureCollection,
+  FeatureCollection as IFeatureCollection,
   Feature,
   Geometry,
   Position,
   Polygon,
+  Point,
 } from "geojson";
 import {
   Viewer,
@@ -30,7 +31,15 @@ import {
   HorizontalOrigin,
   VerticalOrigin,
 } from "cesium";
-import type { Property } from "cesium";
+
+import type {
+  BillboardCollection as IBillboardCollection,
+  LabelCollection as ILabelCollection,
+  Viewer as IViewer,
+} from "cesium";
+
+import { markRaw } from "vue";
+import { useSysStore } from "@/store";
 
 export default class GeometryUtil {
   private viewer: Viewer;
@@ -39,32 +48,65 @@ export default class GeometryUtil {
     this.viewer = viewer;
   }
 
-  public addLabel(coordinates: [number, number, number], label: string) {
-    const labels = this.viewer.scene.primitives.add(new LabelCollection());
-    labels.add({
-      position: Cartesian3.fromDegrees(...coordinates),
-      text: label,
-      // CSS font-family
-      font: "36px Microsoft YaHei bold",
-      fillColor: Color.WHITE,
-      outlineColor: Color.BLACK,
-      outlineWidth: 2,
-      style: LabelStyle.FILL_AND_OUTLINE,
+  public addLabels(featureCollection: IFeatureCollection) {
+    const cesiumStore = useSysStore();
+    let labels: ILabelCollection;
+    //pinia中已经有labelCollection实例，则直接获取实例，如果没有，则创建并保存到pinia(注意用markRaw去响应式)
+    if (cesiumStore.labels instanceof LabelCollection) {
+      labels = cesiumStore.$state.labels as ILabelCollection;
+    } else {
+      labels = this.viewer.scene.primitives.add(new LabelCollection());
+      cesiumStore.setLabels(markRaw(labels));
+    }
+
+    featureCollection.features.forEach((feature) => {
+      const degrees = (feature.geometry as Point).coordinates;
+      const labelText = feature.properties?.label;
+
+      labels.add({
+        position: Cartesian3.fromDegrees(
+          ...(degrees as [number, number]),
+          feature.properties?.height
+        ),
+        text: labelText,
+        // CSS font-family
+        font: `${feature.properties?.fontsize || "36px"} Microsoft YaHei`,
+        fillColor: feature.properties?.fillColor
+          ? Color.fromCssColorString(feature.properties?.fillColor)
+          : Color.WHITE,
+        outlineColor: feature.properties?.outlineColor
+          ? Color.fromCssColorString(feature.properties?.fillColor)
+          : Color.ROYALBLUE,
+        outlineWidth: feature.properties?.outlineWidth || 1,
+        pixelOffset: new Cartesian2(
+          feature.properties?.offsetWidth || 0,
+          feature.properties?.offsetHeight || 0
+        ),
+        style: LabelStyle.FILL_AND_OUTLINE,
+      });
     });
   }
 
-  public addIcon(featureCollection: FeatureCollection) {
-    const billboards = this.viewer.scene.primitives.add(
-      new BillboardCollection()
-    );
+  public addIcons(featureCollection: IFeatureCollection) {
+    const cesiumStore = useSysStore();
+    let billboards: IBillboardCollection;
+    //同addLabels存储pinia逻辑
+    if (cesiumStore.billboards instanceof BillboardCollection) {
+      billboards = cesiumStore.$state.billboards as IBillboardCollection;
+    } else {
+      billboards = this.viewer.scene.primitives.add(new BillboardCollection());
+      cesiumStore.setBillBoards(markRaw(billboards));
+    }
 
     featureCollection.features.forEach((feature) => {
-      const degrees = (feature.geometry as Polygon).coordinates;
+      const degrees = (feature.geometry as Point).coordinates;
       billboards.add({
         image: feature.properties?.url, // default: undefined
         show: true, // default
-        //@ts-ignore
-        position: Cartesian3.fromDegrees(...degrees),
+        position: Cartesian3.fromDegrees(
+          ...(degrees as [number, number]),
+          feature.properties?.height
+        ),
         eyeOffset: new Cartesian3(0.0, 0.0, 0.0), // default
         horizontalOrigin: HorizontalOrigin.CENTER, // default
         verticalOrigin: VerticalOrigin.BOTTOM, // default:
@@ -84,7 +126,7 @@ export default class GeometryUtil {
   }
 
   //加载geoJson polygon
-  public addGeoJsonPolygon(featureCollection: FeatureCollection) {
+  public addGeoJsonPolygon(featureCollection: IFeatureCollection) {
     //加载公元前522年疆域
 
     GeoJsonDataSource.load(featureCollection, {

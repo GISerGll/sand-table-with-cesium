@@ -6,21 +6,36 @@
  * @FilePath: \Warfare-Simulation-Spring\src\store\modules\cesium.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { defineStore } from 'pinia'
-import { Viewer } from 'cesium'
+import { defineStore } from "pinia";
+
+import type {
+  BillboardCollection as IBillboardCollection,
+  LabelCollection as ILabelCollection,
+  Viewer as IViewer,
+} from "cesium";
 
 export interface SysStore {
-  cesiumViewer: Viewer | null
+  cesiumViewer: IViewer | null;
+  labels: ILabelCollection | null;
+  billboards: IBillboardCollection | null;
 }
 
 export const useSysStore = defineStore({
-  id: 'sys',
+  id: "sys",
   state: (): SysStore => ({
-    cesiumViewer: null
+    cesiumViewer: null,
+    labels: null,
+    billboards: null,
   }),
   actions: {
-    setCesiumViewer(viewer: Viewer) {
-      this.cesiumViewer = viewer
-    }
-  }
-})
+    setCesiumViewer(viewer: IViewer) {
+      this.cesiumViewer = viewer;
+    },
+    setLabels(labels: ILabelCollection) {
+      this.labels = labels;
+    },
+    setBillBoards(billboards: IBillboardCollection) {
+      this.billboards = billboards;
+    },
+  },
+});
