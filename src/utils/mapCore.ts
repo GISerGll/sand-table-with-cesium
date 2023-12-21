@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 13:56:34
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-17 17:51:24
+ * @LastEditTime: 2023-12-21 16:42:52
  * @FilePath: \vue3-cesium\src\utils\mapCore.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -66,7 +66,6 @@ export async function initView(ele: HTMLElement): Promise<Viewer> {
   viewer.shadows = true; //开启或关闭阴影
 
   // 关闭抗锯齿
-  //   viewer.scene.fxaa = true;
   viewer.scene.postProcessStages.fxaa.enabled = true;
 
   //开启帧率检测

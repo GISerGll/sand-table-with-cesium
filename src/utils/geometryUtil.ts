@@ -83,6 +83,7 @@ export default class GeometryUtil {
           feature.properties?.offsetHeight || 0
         ),
         style: LabelStyle.FILL_AND_OUTLINE,
+        scale: feature.properties?.scale
       });
     });
   }
