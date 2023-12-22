@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElStep: typeof import('element-plus/es')['ElStep']
     MapContainer: typeof import('./src/components/MapContainer.vue')['default']
   }
 }
