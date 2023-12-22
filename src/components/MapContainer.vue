@@ -2,12 +2,14 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-21 16:39:08
+ * @LastEditTime: 2023-12-22 15:53:57
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div id="cesium-viewer" ref="viewerDivRef"></div>
+  <div id="cesium-viewer" ref="viewerDivRef">
+    <slot/>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -22,8 +24,8 @@ import GeometryUtil from "@/utils/geometryUtil"
 import BC522 from "@/assets/json/BC522.json";
 import cities from "@/assets/json/city.json"
 import cityIcon from "@/assets/images/city_icon.png"
-import type { Feature, Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
-// window.cameraUtil = cameraUtil;
+import type { Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
+
 onMounted(() => {
   initView(viewerDivRef.value as HTMLElement).then(res => {
     const viewer = res
@@ -46,7 +48,7 @@ onMounted(() => {
     }
     BC522.features.forEach(feature => {
       const centerCoords = geometryUtil.getCenterCoords(feature as IFeature);
-      const labelFeature: Feature = {
+      const labelFeature: IFeature = {
         type: "Feature",
         geometry: {
           coordinates: centerCoords as IPosition,
@@ -92,6 +94,8 @@ onMounted(() => {
 #cesium-viewer {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
 
   /* cesium 去版权 */
   :deep(.cesium-widget-credits) {
