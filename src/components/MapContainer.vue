@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-22 15:53:57
+ * @LastEditTime: 2023-12-22 16:47:08
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -66,7 +66,7 @@ onMounted(() => {
     geometryUtil.addLabels(countryLabels)
 
     //添加首都标注及图标
-    cities.features.forEach(city => {
+    cities.features.forEach((city:any) => {
       city.properties.url = cityIcon;
       city.properties.label = city.properties["名称"];
       city.properties.fontsize = '32px';
@@ -79,7 +79,7 @@ onMounted(() => {
 
     geometryUtil.addLabels(cities as any)
 
-    cities.features.forEach(city => {
+    cities.features.forEach((city:any) => {
       city.properties.height = 1000;
     })
     geometryUtil.addIcons(cities as any)
