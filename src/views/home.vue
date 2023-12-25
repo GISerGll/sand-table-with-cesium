@@ -2,14 +2,14 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-22 10:10:35
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-22 18:10:04
+ * @LastEditTime: 2023-12-25 10:56:51
  * @FilePath: \Warfare-Simulation-Spring\src\views\home.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <map-container>
     <div class="tips">
-      <el-steps :active="active" finish-status="success" space='20%' class="steps">
+      <el-steps :active="active" align-center :space="'800px'" class="steps">
         <el-step v-for="item in steps" :key="item.key" :title="item.abstract" @click='handleClick' />
       </el-steps>
     </div>
@@ -45,6 +45,8 @@ const steps = [
   }
 ]
 
+const stepWidth = 1 / steps.length * 100 + "%"
+
 const handleClick = () => {
   if (active.value++ > 2) active.value = 0
 }
@@ -57,8 +59,8 @@ const handleClick = () => {
   position: absolute;
   z-index: 1;
   top: 100px;
-  background: url("../assets/images/tips_bg_blue.png") no-repeat center center;;
-  opacity: 0.5;
+  background: url("../assets/images/tips_bg_blue.png") no-repeat center center;
+  ;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,6 +70,29 @@ const handleClick = () => {
   .steps {
     padding: 20px;
     width: 100%;
+
+    :deep(.el-step) {
+      width: v-bind(stepWidth);
+
+    }
+
+    :deep(.el-step__icon) {
+      font-size: 50px;
+      width: 60px;
+      height: 60px;
+    }
+
+    :deep(.el-step__line) {
+      top: 30px;
+    }
+
+    :deep(.el-step__title) {
+      font-size: 24px;
+
+      &.is-process {
+        color: $wss--color-white
+      }
+    }
   }
 }
 
