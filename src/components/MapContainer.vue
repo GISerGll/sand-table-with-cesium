@@ -2,23 +2,21 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-25 15:05:39
+ * @LastEditTime: 2023-12-25 15:55:12
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div id="cesium-viewer" ref="viewerDivRef">
-    <slot/>
+    <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, markRaw } from "vue";
+import { onMounted, ref } from "vue";
 import { initView } from "@/utils/mapCore";
 const viewerDivRef = ref<HTMLDivElement>();
 
-import { useSysStore } from '@/store'
-const cesiumStore = useSysStore()
 import CameraUtil from "@/utils/cameraUtil"
 import GeometryUtil from "@/utils/geometryUtil"
 import BC522 from "@/assets/json/BC522.json";
@@ -26,20 +24,14 @@ import cities from "@/assets/json/city.json"
 import cityIcon from "@/assets/images/city_icon.png"
 import type { Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
 const emit = defineEmits(['mapLoaded'])
- 
+
 onMounted(() => {
   initView(viewerDivRef.value as HTMLElement).then(res => {
     const viewer = res
     emit('mapLoaded', true)
-
-
-    const rawViewer = markRaw(viewer) //利用markRaw标记viewer,避免被响应式劫持
-
-    cesiumStore.setCesiumViewer(rawViewer) //将viewer存储进pinia
     //视角定位
     const cameraUtil = new CameraUtil(viewer);
     window.cameraUtil = cameraUtil;
-
     //添加范围
     const geometryUtil = new GeometryUtil(viewer);
     geometryUtil.addGeoJsonPolygon(BC522 as IFeatureCollection);
@@ -69,7 +61,7 @@ onMounted(() => {
     geometryUtil.addLabels(countryLabels)
 
     //添加首都标注及图标
-    cities.features.forEach((city:any) => {
+    cities.features.forEach((city: any) => {
       city.properties.url = cityIcon;
       city.properties.label = city.properties["名称"];
       city.properties.fontsize = '32px';
@@ -82,12 +74,10 @@ onMounted(() => {
 
     geometryUtil.addLabels(cities as any)
 
-    cities.features.forEach((city:any) => {
+    cities.features.forEach((city: any) => {
       city.properties.height = 1000;
     })
     geometryUtil.addIcons(cities as any)
-
-
   })
 
 });
