@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-22 16:47:08
+ * @LastEditTime: 2023-12-25 15:05:39
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -25,10 +25,13 @@ import BC522 from "@/assets/json/BC522.json";
 import cities from "@/assets/json/city.json"
 import cityIcon from "@/assets/images/city_icon.png"
 import type { Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
-
+const emit = defineEmits(['mapLoaded'])
+ 
 onMounted(() => {
   initView(viewerDivRef.value as HTMLElement).then(res => {
     const viewer = res
+    emit('mapLoaded', true)
+
 
     const rawViewer = markRaw(viewer) //利用markRaw标记viewer,避免被响应式劫持
 

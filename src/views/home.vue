@@ -2,20 +2,19 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-22 10:10:35
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-25 14:47:04
+ * @LastEditTime: 2023-12-25 15:07:18
  * @FilePath: \Warfare-Simulation-Spring\src\views\home.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <map-container>
-    <div class="tips">
+  <map-container @map-loaded="onMapLoaded">
+    <div v-if="showTips" class="tips">
       <el-steps v-show="showSteps" :active="active" align-center :space="'800px'" class="steps">
         <el-step v-for="item in steps" :key="item.key" :title="item.abstract" @click='handleClick(item)' />
       </el-steps>
       <div v-show="!showSteps" class="content">{{ steps[active] && steps[active].title }}
         <SvgIcon name="back" size="40px" @click="goBack"/>
       </div>
-
     </div>
   </map-container>
 </template>
@@ -27,6 +26,7 @@ import { ElSteps } from 'element-plus'
 
 const active = ref(-1)
 const showSteps = ref(true)
+const showTips = ref(false)
 const steps = reactive([
   {
     title: "公元前522年(周景王二十三年)春，楚平王驱逐太子建、杀死太傅伍奢，伍奢之子伍子胥出奔吴国。",
@@ -60,6 +60,10 @@ const handleClick = (item: any) => {
 
 const goBack = () => {
   showSteps.value = !showSteps.value
+}
+
+const onMapLoaded = () => {
+  showTips.value = true;
 }
 </script>
 
