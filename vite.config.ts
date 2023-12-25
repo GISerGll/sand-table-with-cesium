@@ -2,15 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-11 16:14:46
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-22 16:02:25
- * @FilePath: \vue3-cesium\vite.config.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-/*
- * @Author: 耿连龙 genglianlong@mti-sh.cn
- * @Date: 2023-12-11 16:14:46
- * @LastEditors: 耿连龙 genglianlong@mti-sh.cn
- * @LastEditTime: 2023-12-12 16:18:37
+ * @LastEditTime: 2023-12-25 14:26:49
  * @FilePath: \vue3-cesium\vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,15 +13,15 @@ import {
   loadEnv,
 } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { fileURLToPath, URL } from "node:url";
 import { viteExternalsPlugin } from "vite-plugin-externals";
 import { insertHtml, h } from "vite-plugin-insert-html";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { resolve } from "path";
+import path from "path";
 
 export default defineConfig((context) => {
   const mode = context.mode;
@@ -63,6 +55,10 @@ export default defineConfig((context) => {
     }),
     Components({
       resolvers: [ElementPlusResolver()],
+    }),
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/images/icons')],
+      symbolId: 'icon-[dir]-[name]',
     }),
   ];
 

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "@types/geojson": "^7946.0.13",
     "@types/turf": "^3.5.32",
     "cesium": "1.104",
@@ -28,6 +29,7 @@
     "vite-plugin-externals": "^0.6.2",
     "vite-plugin-insert-html": "^1.0.1",
     "vite-plugin-static-copy": "^1.0.0",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue-tsc": "^1.2.0"
   }
 }
