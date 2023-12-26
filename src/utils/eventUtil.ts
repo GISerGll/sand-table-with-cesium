@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-26 14:24:50
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-26 16:06:34
+ * @LastEditTime: 2023-12-26 16:56:27
  * @FilePath: \Warfare-Simulation-Spring\src\utils\eventUtil.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -46,7 +46,7 @@ export default class EventUtil {
         const height_String = (
           this.viewer.camera.positionCartographic.height / 1000
         ).toFixed(2);
-
+        //后续会考虑添加feature
         callback({
           latitude: lat_String,
           longitude: lng_String,
@@ -54,5 +54,26 @@ export default class EventUtil {
         });
       }
     }, ScreenSpaceEventType.LEFT_CLICK);
+  }
+
+  public initMouseMoveEvent(callback: Function) {
+    const cesiumStore = useSysStore();
+    //老规矩，pinia中已经有该事件，则直接获取实例，如果没有，则创建并保存到pinia(注意用markRaw去响应式)
+    let screenSpaceEvent = cesiumStore.$state.event.get("mouseMoveEvent");
+    if (!(screenSpaceEvent instanceof ScreenSpaceEventHandler)) {
+      screenSpaceEvent = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
+
+      cesiumStore.setCesiumEvent({
+        evtName: "mouseMoveEvent",
+        evtHandler: screenSpaceEvent,
+      });
+    }
+    screenSpaceEvent.setInputAction((movement: any) => {
+      const height = this.viewer.camera.positionCartographic.height;
+
+      callback({
+        height,
+      });
+    }, ScreenSpaceEventType.WHEEL);
   }
 }

@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-26 16:04:40
+ * @LastEditTime: 2023-12-26 17:40:21
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -62,6 +62,17 @@ onMounted(() => {
       pickLongitude.value = longitude;
       pickLatitude.value = latitude
     })
+
+    eventUtil.initMouseMoveEvent((res: any) => {
+      const { height } = res
+
+      const geojsonData = viewer.dataSources.getByName("BC522")
+      if (geojsonData.length) {
+        geojsonData[0].show = (height > 5000)
+      }
+    })
+
+
 
     //添加国家名称标注
     const countryLabels: IFeatureCollection = {
