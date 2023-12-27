@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-14 16:29:45
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-26 14:45:46
+ * @LastEditTime: 2023-12-27 10:15:42
  * @FilePath: \Warfare-Simulation-Spring\src\store\modules\cesium.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -19,7 +19,7 @@ export interface SysStore {
   cesiumViewer: IViewer | null;
   labels: ILabelCollection | null;
   billboards: IBillboardCollection | null;
-  event: Map<String, IScreenSpaceEventHandler>;
+  event: Map<String, IScreenSpaceEventHandler | Function>;
 }
 
 export const useSysStore = defineStore({
@@ -42,7 +42,7 @@ export const useSysStore = defineStore({
     },
     setCesiumEvent(evtObj: {
       evtName: String;
-      evtHandler: IScreenSpaceEventHandler;
+      evtHandler: IScreenSpaceEventHandler | Function;
     }) {
       this.event.set(evtObj.evtName, evtObj.evtHandler);
     },
