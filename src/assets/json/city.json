@@ -4,7 +4,12 @@
     {
       "type": "Feature",
       "id": 1794,
-      "properties": { "_draw_type": "point", "名称": "郢都", "国家": "楚" },
+      "properties": {
+        "_draw_type": "point",
+        "名称": "郢都",
+        "国家": "楚",
+        "name": "yingdu"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [112.23792312, 30.33058024]
@@ -14,7 +19,12 @@
     {
       "type": "Feature",
       "id": 2657,
-      "properties": { "_draw_type": "point", "名称": "会稽", "国家": "越" },
+      "properties": {
+        "_draw_type": "point",
+        "名称": "会稽",
+        "国家": "越",
+        "name": "kuaiji"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [120.58108365, 30.04958358]
@@ -24,7 +34,12 @@
     {
       "type": "Feature",
       "id": 3644,
-      "properties": { "_draw_type": "point", "名称": "吴", "国家": "吴" },
+      "properties": {
+        "_draw_type": "point",
+        "名称": "吴",
+        "国家": "吴",
+        "name": "wu"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [120.58122945, 31.29864403]

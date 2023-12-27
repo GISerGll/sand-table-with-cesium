@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-22 10:10:35
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-26 14:20:59
+ * @LastEditTime: 2023-12-27 14:17:13
  * @FilePath: \Warfare-Simulation-Spring\src\views\home.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -26,6 +26,7 @@ import { ref, reactive, computed } from "vue"
 import MapContainer from "@/components/MapContainer.vue";
 import { ElSteps } from 'element-plus'
 import timeline from "@/assets/js/historyTimeline.js";
+import cameraUtil from "@/utils/cameraUtil";
 
 const active = ref(-1)
 const showSteps = ref(true)
@@ -41,6 +42,12 @@ const handleClick = (item: any) => {
 
   switch (item.key) {
     case "BC522":
+    cameraUtil.normalFlyTo("yingDuView",{
+      duration:3,
+      callback:() => {
+        addBC522Animation();
+      }
+    })
       break;
   }
 }
@@ -51,6 +58,10 @@ const goBack = () => {
 
 const onMapLoaded = () => {
   showTips.value = true;
+}
+
+const addBC522Animation = () => {
+  
 }
 
 

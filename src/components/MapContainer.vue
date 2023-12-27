@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-27 10:24:29
+ * @LastEditTime: 2023-12-27 14:07:35
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -69,7 +69,7 @@ onMounted(() => {
 
       const geojsonData = viewer.dataSources.getByName("BC522")
       if (geojsonData.length) {
-        geojsonData[0].show = (height > 5)
+        geojsonData[0].show = (height > 10)
       }
     })
 
