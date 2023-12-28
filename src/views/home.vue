@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-22 10:10:35
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-27 14:17:13
+ * @LastEditTime: 2023-12-28 17:39:44
  * @FilePath: \Warfare-Simulation-Spring\src\views\home.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,10 +23,14 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue"
+
 import MapContainer from "@/components/MapContainer.vue";
 import { ElSteps } from 'element-plus'
 import timeline from "@/assets/js/historyTimeline.js";
-import cameraUtil from "@/utils/cameraUtil";
+import cameraUtil from "@/utils/gis/cameraUtil";
+import ModelUtil from "@/utils/gis/modelUtil";
+import { useSysStore } from "@/store";
+import getAssetsFile from "@/utils/getResource" //本来应该写成全局函数，奈何vue结合ts报错太多了，网上的东西也无法解决，暂时搁置
 
 const active = ref(-1)
 const showSteps = ref(true)
@@ -42,12 +46,12 @@ const handleClick = (item: any) => {
 
   switch (item.key) {
     case "BC522":
-    cameraUtil.normalFlyTo("yingDuView",{
-      duration:3,
-      callback:() => {
-        addBC522Animation();
-      }
-    })
+      cameraUtil.normalFlyTo("yingDuView", {
+        duration: 3,
+        callback: (res: any) => {
+          addBC522Animation(res);
+        }
+      })
       break;
   }
 }
@@ -56,12 +60,29 @@ const goBack = () => {
   showSteps.value = !showSteps.value
 }
 
+
+let modelUtil: ModelUtil;
 const onMapLoaded = () => {
   showTips.value = true;
+  const cesiumStore = useSysStore();
+  const cesiumViewer = cesiumStore.$state
+    .cesiumViewer
+
+  modelUtil = new ModelUtil(cesiumViewer as any);
 }
 
-const addBC522Animation = () => {
-  
+const addBC522Animation = (res: any) => {
+  const { center } = res
+  const models = [];
+  models.push({
+    url: getAssetsFile('models/qiziglb.glb'),
+    longitude: center[0],
+    latitude: center[1],
+    height: 0,
+    color: "#000"
+  })
+
+  modelUtil.addGltfModels(models);
 }
 
 

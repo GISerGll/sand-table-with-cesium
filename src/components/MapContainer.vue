@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-27 14:07:35
+ * @LastEditTime: 2023-12-28 17:34:32
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -26,15 +26,16 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
-import { initView } from "@/utils/mapCore";
+import { initView } from "@/utils/gis/mapCore";
 const viewerDivRef = ref<HTMLDivElement>();
 
-import CameraUtil from "@/utils/cameraUtil"
-import GeometryUtil from "@/utils/geometryUtil"
-import EventUtil from "@/utils/eventUtil";
+import CameraUtil from "@/utils/gis/cameraUtil"
+import GeometryUtil from "@/utils/gis/geometryUtil"
+import EventUtil from "@/utils/gis/eventUtil";
 import BC522 from "@/assets/json/BC522.json";
 import cities from "@/assets/json/city.json"
 import cityIcon from "@/assets/images/city_icon.png"
+
 import type { Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
 const emit = defineEmits(['mapLoaded'])
 const pickHeight = ref(0);
@@ -109,6 +110,7 @@ onMounted(() => {
       city.properties.outlineWidth = 5;
       city.properties.height = 1000;
       city.properties.scale = 0.5
+      city.properties.scaleByDistance = [1000, 3, 100000, 1]
     })
 
     geometryUtil.addLabels(cities as any)
