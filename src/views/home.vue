@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-22 10:10:35
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-28 17:39:44
+ * @LastEditTime: 2023-12-29 11:34:14
  * @FilePath: \Warfare-Simulation-Spring\src\views\home.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -75,11 +75,13 @@ const addBC522Animation = (res: any) => {
   const { center } = res
   const models = [];
   models.push({
+    //url: getAssetsFile('models/qima1.glb'),  //起码模型因为节点太多cesium无法加载(差距体现出来了)\
     url: getAssetsFile('models/qiziglb.glb'),
     longitude: center[0],
     latitude: center[1],
     height: 0,
-    color: "#000"
+    color: "#000",
+    outlineColor: "#3498ff"
   })
 
   modelUtil.addGltfModels(models);

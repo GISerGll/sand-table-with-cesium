@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-27 14:21:50
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-28 17:40:45
+ * @LastEditTime: 2023-12-29 11:36:00
  * @FilePath: \Warfare-Simulation-Spring\src\utils\gis\modelUtil.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -57,7 +57,9 @@ export default class modelUtil {
             url: gltfModel.url,
             modelMatrix: modelMatrix,
             minimumPixelSize: 128,
-            color:gltfModel.color ? Color.fromCssColorString(gltfModel.color) : undefined
+            color:gltfModel.color ? Color.fromCssColorString(gltfModel.color) : undefined,
+            outlineColor: gltfModel.outlineColor ? Color.fromCssColorString(gltfModel.outlineColor) : undefined,
+            silhouetteSize:2,
           }).then((model) => {
             modelPrimitives.add(model);
             model.readyEvent.addEventListener(() => {
