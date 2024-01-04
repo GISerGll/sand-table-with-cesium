@@ -11,6 +11,7 @@ declare module 'vue' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElStep: typeof import('element-plus/es')['ElStep']
     MapContainer: typeof import('./src/components/MapContainer.vue')['default']
+    MapPopup: typeof import('./src/components/MapPopup.vue')['default']
     SvgIcon: typeof import('./src/components/svgIcon/index.vue')['default']
   }
 }

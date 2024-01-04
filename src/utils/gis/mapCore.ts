@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 13:56:34
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-25 16:30:03
+ * @LastEditTime: 2024-01-04 09:39:54
  * @FilePath: \vue3-cesium\src\utils\mapCore.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,7 +11,6 @@ import {
   Viewer,
   createWorldTerrain,
   ScreenSpaceEventType,
-  Cartesian3,
   Ion,
 } from "cesium";
 import "cesium/Build/CesiumUnminified/Widgets/widgets.css";
@@ -70,13 +69,10 @@ export async function initView(ele: HTMLElement): Promise<Viewer> {
 
   // 关闭抗锯齿
   viewer.scene.postProcessStages.fxaa.enabled = true;
-
   //开启帧率检测
   viewer.scene.debugShowFramesPerSecond = true;
-
   // 开启全球光照
   viewer.scene.globe.enableLighting = true;
-
   //更改配置，性能优化
   viewer.scene.logarithmicDepthBuffer = true;
   // 取消双击事件-追踪该位置
@@ -84,17 +80,16 @@ export async function initView(ele: HTMLElement): Promise<Viewer> {
     ScreenSpaceEventType.LEFT_DOUBLE_CLICK
   );
 
-
   return new Promise((resolve) => {
     cameraUtil.normalFlyTo("mapInitView", {
       duration: 3,
       callback: () => {
         setTimeout(() => {
-          cameraUtil.normalFlyTo("mapHighView",{
-            duration:2,
-            callback:() => {
-              resolve(viewer)
-            }
+          cameraUtil.normalFlyTo("mapHighView", {
+            duration: 2,
+            callback: () => {
+              resolve(viewer);
+            },
           });
         }, 1500);
       },

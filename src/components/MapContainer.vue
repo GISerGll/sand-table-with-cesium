@@ -2,31 +2,22 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-28 17:34:32
+ * @LastEditTime: 2024-01-04 10:00:53
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div id="cesium-viewer" ref="viewerDivRef">
     <slot />
-
-    <div class="map-info">
-      <div style="width: 140px; height: 30px;">
-        <font size="3" color="white">经度：<span>{{ pickLongitude }}</span></font>
-      </div>
-      <div style="width: 140px; height: 30px;">
-        <font size="3" color="white">纬度：<span>{{ pickLatitude }}</span></font>
-      </div>
-      <div style="width: 180px; height: 30px;">
-        <font size="3" color="white">视角高：<span>{{ pickHeight }}</span>km</font>
-      </div>
-    </div>
   </div>
+
+  <map-popup></map-popup>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
 import { initView } from "@/utils/gis/mapCore";
+import MapPopup from "./MapPopup.vue";
 const viewerDivRef = ref<HTMLDivElement>();
 
 import CameraUtil from "@/utils/gis/cameraUtil"
