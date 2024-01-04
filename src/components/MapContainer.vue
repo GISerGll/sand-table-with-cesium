@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-04 10:00:53
+ * @LastEditTime: 2024-01-04 15:29:11
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,9 +29,14 @@ import cityIcon from "@/assets/images/city_icon.png"
 
 import type { Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
 const emit = defineEmits(['mapLoaded'])
-const pickHeight = ref(0);
-const pickLongitude = ref(0);
-const pickLatitude = ref(0)
+let mapPickInfo = reactive<IFeature>({
+  type: "Feature", 
+  geometry: {
+    type: "Point",
+    coordinates: [0, 0]
+  },
+  properties: {}
+});
 
 onMounted(() => {
   initView(viewerDivRef.value as HTMLElement).then(res => {
@@ -48,11 +53,7 @@ onMounted(() => {
 
 
     eventUtil.initMapClickEvent((res: any) => {
-      const { latitude, longitude, height } = res;
-
-      pickHeight.value = height;
-      pickLongitude.value = longitude;
-      pickLatitude.value = latitude
+      mapPickInfo = res;
     })
 
     eventUtil.initMouseMoveEvent((res: any) => {

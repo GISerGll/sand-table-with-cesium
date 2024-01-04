@@ -16,8 +16,6 @@
         <SvgIcon name="back" size="40px" @click="goBack" />
       </div>
     </div>
-
-
   </map-container>
 </template>
 
