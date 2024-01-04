@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-22 10:10:35
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-04 10:55:51
+ * @LastEditTime: 2024-01-04 11:32:56
  * @FilePath: \Warfare-Simulation-Spring\src\views\home.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -31,6 +31,11 @@ import cameraUtil from "@/utils/gis/cameraUtil";
 import ModelUtil from "@/utils/gis/modelUtil";
 import { useSysStore } from "@/store";
 import getAssetsFile from "@/utils/getResource" //本来应该写成全局函数，奈何vue结合ts报错太多了，网上的东西也无法解决，暂时搁置
+import type {
+  Feature as IGeoJsonFeature,
+  FeatureCollection as IFeatureCollection,
+  FeatureCollection
+} from "geojson";
 
 const active = ref(-1)
 const showSteps = ref(true)
@@ -73,21 +78,28 @@ const onMapLoaded = () => {
 
 const addBC522Animation = (res: any) => {
   const { center } = res
-  const models = [];
-  models.push({
-    //url: getAssetsFile('models/qima1.glb'),  //起码模型因为节点太多cesium无法加载(差距体现出来了)\
-    url: getAssetsFile('models/qiziglb.glb'),
-    longitude: center[0],
-    latitude: center[1],
-    height: 0,
-    color: "#000",
-    outlineColor: "#3498ff",
+  const models: FeatureCollection = {
+    type: "FeatureCollection",
+    features: []
+  };
+
+  const model: IGeoJsonFeature = {
+    type: "Feature",
+    geometry: {
+      coordinates: [center[0], center[1]],
+      type: "Point"
+    },
     properties: {
+      url: getAssetsFile('models/qiziglb.glb'),
+      height: 0,
+      color: "#000",
+      outlineColor: "#3498ff",
       id: "wuzixu001",
       name: "伍子胥",
       type: "model"
     }
-  })
+  }
+  models.features.push(model)
 
   modelUtil.addGltfModels(models);
 }
