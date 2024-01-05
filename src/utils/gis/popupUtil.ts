@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2024-01-04 15:30:48
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-05 14:44:32
+ * @LastEditTime: 2024-01-05 15:39:58
  * @FilePath: \Warfare-Simulation-Spring\src\utils\gis\popupUtil.ts
  * @Description: 这里弹窗思路是在地图组件注册好备用的弹窗组件并设置隐藏,当点击地图获取到要素信息后，该要素对应的弹窗显示。
  * 并通过postRender实时刷新弹窗在屏幕的位置
@@ -19,7 +19,6 @@ export default class popupUtil {
   }
 
   addPopup(feature: IFeature, dom: HTMLElement) {
-    console.log(dom);
     const { geometry, properties } = feature;
     const height = properties?.height || 0;
 
@@ -41,10 +40,17 @@ export default class popupUtil {
           this.viewer.scene,
           cart3
         );
+
+        if(!screen.x || !screen.y) {
+          return;
+        }
+        
         if (screenPoint) {
           if (screenPoint[0] !== screen.x || screenPoint[1] !== screen.y) {
-            dom.style.left = screen.x - (dom.clientWidth * 0.5) + "px";
-            dom.style.top = screen.y - (dom.clientHeight + 20) + "px";
+            dom.style.left = screen.x - dom.clientWidth * 0.5 + "px";
+            dom.style.top = screen.y - (dom.clientHeight + 30) + "px";
+
+            console.log(dom.style.left, dom.style.top);
           }
         }
       });

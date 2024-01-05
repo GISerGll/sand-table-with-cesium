@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2024-01-05 10:09:39
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-05 11:10:56
+ * @LastEditTime: 2024-01-05 15:00:01
  * @FilePath: \Warfare-Simulation-Spring\src\components\mapPopups\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -45,11 +45,10 @@ const properties = computed(() => props.popupInfo.properties);
 
 <style lang="scss" scoped>
 .cesium-popup {
-  height: 300px;
-  width: 200px;
+  height: 432px;
+  width: 313px;
   position: absolute;
-  background: #d02525;
-  top: 50%;
-  right: 45%;
+  background: url("../../assets/images/popup_bg.png") no-repeat center center;
+  padding: 15px;
 }
 </style>
