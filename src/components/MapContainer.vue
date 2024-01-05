@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 10:15:57
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-04 15:29:11
+ * @LastEditTime: 2024-01-05 14:36:34
  * @FilePath: \vue3-cesium\src\components\MapContainer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,26 +11,30 @@
     <slot />
   </div>
 
-  <map-popup></map-popup>
+  <map-popup v-show="showPopup" :popupInfo="popupInfo" ref="popupDivRef"></map-popup>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { VueElement, onMounted, reactive, ref } from "vue";
 import { initView } from "@/utils/gis/mapCore";
-import MapPopup from "./MapPopup.vue";
+import MapPopup from "./mapPopups/index.vue";
 const viewerDivRef = ref<HTMLDivElement>();
-
+const popupDivRef = ref();
 import CameraUtil from "@/utils/gis/cameraUtil"
 import GeometryUtil from "@/utils/gis/geometryUtil"
 import EventUtil from "@/utils/gis/eventUtil";
+import PopupUtil from "@/utils/gis/popupUtil";
 import BC522 from "@/assets/json/BC522.json";
-import cities from "@/assets/json/city.json"
-import cityIcon from "@/assets/images/city_icon.png"
+import cities from "@/assets/json/city.json";
+import cityIcon from "@/assets/images/city_icon.png";
 
 import type { Feature as IFeature, FeatureCollection as IFeatureCollection, Position as IPosition } from "geojson";
-const emit = defineEmits(['mapLoaded'])
+const emit = defineEmits(['mapLoaded']);
+const showPopup = ref(false);
+let popupInfo: any = reactive({})
+
 let mapPickInfo = reactive<IFeature>({
-  type: "Feature", 
+  type: "Feature",
   geometry: {
     type: "Point",
     coordinates: [0, 0]
@@ -51,14 +55,27 @@ onMounted(() => {
     //注册空间事件
     const eventUtil = new EventUtil(viewer);
 
+    const popupUtil = new PopupUtil(viewer);
+
 
     eventUtil.initMapClickEvent((res: any) => {
       mapPickInfo = res;
-    })
 
+      if (mapPickInfo.properties?.type) {
+        popupInfo = {
+          type: mapPickInfo.properties.type,
+          properties: mapPickInfo.properties
+        }
+
+        popupUtil.addPopup(mapPickInfo, popupDivRef.value.$el)
+        showPopup.value = true;
+      } else {
+        showPopup.value = false;
+      }
+    })
+    
     eventUtil.initMouseMoveEvent((res: any) => {
       const { height } = res
-      console.log(height);
 
       const geojsonData = viewer.dataSources.getByName("BC522")
       if (geojsonData.length) {

@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-26 14:24:50
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-04 15:14:58
+ * @LastEditTime: 2024-01-05 13:41:12
  * @FilePath: \Warfare-Simulation-Spring\src\utils\eventUtil.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,6 +16,7 @@ import {
 import type { Viewer } from "cesium";
 import { useSysStore } from "@/store";
 import type { Feature as IFeature } from "geojson";
+import { markRaw } from "vue";
 
 export default class EventUtil {
   private viewer: Viewer;
@@ -32,7 +33,7 @@ export default class EventUtil {
 
       cesiumStore.setCesiumEvent({
         evtName: "screenSpaceEvent",
-        evtHandler: screenSpaceEvent,
+        evtHandler: markRaw(screenSpaceEvent),
       });
     }
     screenSpaceEvent.setInputAction((movement: any) => {
@@ -110,7 +111,6 @@ export default class EventUtil {
             ._level;
         }
         let str = `级数：${level} 视高：${height}km  方位角：${heading}° 俯仰角：${pitch}° 翻滚角：${roll}°`;
-        console.log(str);
 
         callback({
           level,
@@ -123,8 +123,41 @@ export default class EventUtil {
 
       cesiumStore.setCesiumEvent({
         evtName: "mouseMoveEvent",
-        evtHandler: screenSpaceEvent,
+        evtHandler: markRaw(screenSpaceEvent),
       });
+    }
+  }
+
+  public initPostRenderEvent(callback: Function) {
+    const cesiumStore = useSysStore();
+
+    //老规矩，pinia中已经有监听弹窗事件，则直接获取实例，如果没有，则创建并保存到pinia(注意用markRaw去响应式)
+    let prEvent = cesiumStore.$state.event.get("PopupEvent");
+
+    if (!CesiumDefined(prEvent)) {
+      prEvent = this.viewer.scene.postRender.addEventListener(() => {
+        //此处只需要callback钩子，不需要返回结果，当作事件中心派发用
+        callback();
+      });
+      cesiumStore.setCesiumEvent({
+        evtName: "PopupEvent",
+        evtHandler: markRaw(prEvent),
+      });
+    }
+  }
+
+  public deleteEvent(evtName: string) {
+    const cesiumStore = useSysStore();
+
+    //老规矩，pinia中已经有监听弹窗事件，则直接获取实例，如果没有，则创建并保存到pinia(注意用markRaw去响应式)
+    let mapEvent = cesiumStore.$state.event.get(evtName);
+
+    if(CesiumDefined(mapEvent)) {
+      if(evtName === "PopupEvent") {
+        this.viewer.scene.postRender.removeEventListener(mapEvent as any)
+      }else {
+        (mapEvent as ScreenSpaceEventHandler).destroy()
+      }
     }
   }
 }

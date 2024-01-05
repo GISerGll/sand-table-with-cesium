@@ -32,7 +32,6 @@ import getAssetsFile from "@/utils/getResource" //本来应该写成全局函数
 import type {
   Feature as IGeoJsonFeature,
   FeatureCollection as IFeatureCollection,
-  FeatureCollection
 } from "geojson";
 
 const active = ref(-1)
@@ -76,7 +75,7 @@ const onMapLoaded = () => {
 
 const addBC522Animation = (res: any) => {
   const { center } = res
-  const models: FeatureCollection = {
+  const models: IFeatureCollection = {
     type: "FeatureCollection",
     features: []
   };
@@ -94,7 +93,7 @@ const addBC522Animation = (res: any) => {
       outlineColor: "#3498ff",
       id: "wuzixu001",
       name: "伍子胥",
-      type: "model"
+      type: "general"
     }
   }
   models.features.push(model)

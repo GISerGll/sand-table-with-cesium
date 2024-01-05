@@ -7,11 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    City: typeof import('./src/components/mapPopups/City.vue')['default']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElStep: typeof import('element-plus/es')['ElStep']
+    General: typeof import('./src/components/mapPopups/General.vue')['default']
     MapContainer: typeof import('./src/components/MapContainer.vue')['default']
     MapPopup: typeof import('./src/components/MapPopup.vue')['default']
+    MapPopups: typeof import('./src/components/mapPopups/index.vue')['default']
+    Soldier: typeof import('./src/components/mapPopups/Soldier.vue')['default']
     SvgIcon: typeof import('./src/components/svgIcon/index.vue')['default']
   }
 }
