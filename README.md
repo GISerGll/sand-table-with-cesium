@@ -2,7 +2,7 @@
  * @Author: 耿连龙 genglianlong@mti-sh.cn
  * @Date: 2023-12-13 17:43:55
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-04 10:53:57
+ * @LastEditTime: 2024-01-05 09:16:50
  * @FilePath: \Warfare-Simulation-Spring\README.md
 -->
 # 春秋战争-吴越战争推演
@@ -26,13 +26,13 @@ pnpm preview
 ## 数据来源
 [知乎](https://www.zhihu.com/zvideo/1206289340101459968?utm_source=wechat_session&utm_id=0) 吴越春秋地图范围，经QGIS软件地理校准生成矢量，加载到Cesium生成大致范围。
 
-##关于架构思考
+## 关于架构思考
 
 
-##关于使用方式
+## 关于使用方式
 
 
-##与Cesium交互设计
+## 与Cesium交互设计
 交互分为两层，一层对使用者来讲，将数据与系统进行交互，获取交互结果。这层设计的想法是，**传入传出数据尽量都为GeoJson格式**；另外一层为系统设计与Cesium的交互，这层还未定，边开发边考虑。
 
 
