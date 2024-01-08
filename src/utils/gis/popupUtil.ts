@@ -2,7 +2,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2024-01-04 15:30:48
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2024-01-08 11:25:53
+ * @LastEditTime: 2024-01-08 15:04:39
  * @FilePath: \Warfare-Simulation-Spring\src\utils\gis\popupUtil.ts
  * @Description: 这里弹窗思路是在地图组件注册好备用的弹窗组件并设置隐藏,当点击地图获取到要素信息后，该要素对应的弹窗显示。
  * 并通过postRender实时刷新弹窗在屏幕的位置
@@ -19,7 +19,7 @@ export default class popupUtil {
     this.viewer = viewer;
   }
 
-  addPopup(feature: IFeature, dom: HTMLElement) {
+  public addPopup(feature: IFeature, dom: HTMLElement) {
     const { geometry, properties } = feature;
     const height = properties?.height || 0;
 
@@ -28,16 +28,25 @@ export default class popupUtil {
       height,
     ]);
 
-    const { height:domHeight, width:domWidth } = window.getComputedStyle(dom, null);
+    const { height: domHeight, width: domWidth } = window.getComputedStyle(
+      dom,
+      null
+    );
 
-    dom.style.left = screenCoords.x - Number(domWidth) * 0.5 + "px";
-    dom.style.top = screenCoords.y - Number(domHeight) + "px";
+    dom.style.left =
+      screenCoords.x -
+      Number(domWidth.substring(0, domWidth.length - 2)) * 0.5 +
+      "px";
+    dom.style.top =
+      screenCoords.y -
+      (Number(domHeight.substring(0, domHeight.length - 2)) + 30) +
+      "px";
 
     const cesiumStore = useSysStore();
     //老规矩，pinia中已经有监听弹窗事件，则直接获取实例，如果没有，则创建并保存到pinia(注意用markRaw去响应式)
     let popupEvent = cesiumStore.$state.event.get("PopupEvent");
     if (!CesiumDefined(popupEvent)) {
-      popupEvent = this.viewer.scene.postRender.addEventListener(() => {
+      popupEvent = function () {
         const screenCoords = GeometryUtil.geoCoordsToScreen([
           ...((geometry as IPoint).coordinates as [number, number]),
           height,
@@ -49,11 +58,25 @@ export default class popupUtil {
 
         dom.style.left = screenCoords.x - dom.clientWidth * 0.5 + "px";
         dom.style.top = screenCoords.y - (dom.clientHeight + 30) + "px";
-      });
+
+        console.log(111);
+      };
+
+      this.viewer.scene.postRender.addEventListener(popupEvent as any);
       cesiumStore.setCesiumEvent({
         evtName: "PopupEvent",
         evtHandler: markRaw(popupEvent),
       });
+    }
+  }
+
+  public deletePopup() {
+    const cesiumStore = useSysStore();
+    let popupEvent = cesiumStore.$state.event.get("PopupEvent");
+
+    if (CesiumDefined(popupEvent)) {
+      this.viewer.scene.postRender.removeEventListener(popupEvent as any);
+      cesiumStore.deleteCesiumEvent("PopupEvent");
     }
   }
 }

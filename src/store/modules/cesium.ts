@@ -49,6 +49,9 @@ export const useSysStore = defineStore({
     }) {
       this.event.set(evtObj.evtName, evtObj.evtHandler);
     },
+    deleteCesiumEvent(evtName: String) {
+      this.event.delete(evtName);
+    },
     addModelPrimitives(primitives: IPrimitiveCollection) {
       this.modelPrimitives = primitives;
     }
