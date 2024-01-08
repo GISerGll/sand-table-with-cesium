@@ -3,7 +3,7 @@
  * @Author: 耿连龙 654506379@qq.com
  * @Date: 2023-12-17 16:36:47
  * @LastEditors: 耿连龙 654506379@qq.com
- * @LastEditTime: 2023-12-28 17:31:27
+ * @LastEditTime: 2024-01-08 09:58:36
  * @FilePath: \Warfare-Simulation-Spring\src\utils\geometryUtil.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -32,6 +32,7 @@ import {
   HorizontalOrigin,
   VerticalOrigin,
   NearFarScalar,
+  SceneTransforms,
 } from "cesium";
 
 import type {
@@ -174,6 +175,19 @@ export default class GeometryUtil {
         entity.polygon.outlineColor = Color.MAGENTA as any;
       }
     });
+  }
+
+  //地理坐标转屏幕坐标
+  public static geoCoordsToScreen(coordinates:[number,number,number]) {
+    const cart3 = Cartesian3.fromDegrees(...coordinates);
+    const cesiumStore = useSysStore();
+    const viewer = cesiumStore.$state.cesiumViewer as Viewer;
+    const screen = SceneTransforms.wgs84ToWindowCoordinates(
+      viewer.scene,
+      cart3
+    );
+
+    return screen;
   }
 
   private getCenter(feature: Feature) {

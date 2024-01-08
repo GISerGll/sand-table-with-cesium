@@ -23,7 +23,6 @@ import { markRaw } from "vue";
 import cameraUtil from "./cameraUtil";
 
 export async function initView(ele: HTMLElement): Promise<Viewer> {
-  console.log(ele);
   const viewer = new Viewer(ele, {
     imageryProvider: new UrlTemplateImageryProvider({
       url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
